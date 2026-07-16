@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Prompt Hub v1</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#0d1117;color:#fff}
+header{padding:24px;background:#111827;position:sticky;top:0}
+.container{max-width:1100px;margin:auto;padding:20px}
+.hero{padding:30px 0}
+.search{width:100%;padding:14px;border-radius:12px;border:none;background:#1f2937;color:#fff}
+.chips{display:flex;gap:10px;overflow:auto;padding:15px 0}
+.chip{background:#1f2937;padding:10px 16px;border-radius:999px;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.card{background:#161b22;padding:18px;border-radius:18px;border:1px solid #2d3748}
+.badge{display:inline-block;background:#2563eb;padding:4px 10px;border-radius:999px;font-size:12px}
+button{margin-top:15px;width:100%;padding:12px;border:none;border-radius:10px;background:#2563eb;color:#fff;cursor:pointer}
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#16a34a;padding:12px 18px;border-radius:10px;display:none}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#111827;display:flex;justify-content:space-around;padding:12px}
+.bottom div{text-align:center;color:#ddd}
+</style>
+</head>
+<body>
+<header><div class="container"><h2>🤖 AI Prompt Hub</h2></div></header>
+<div class="container">
+<div class="hero">
+<h1>Discover Amazing AI Prompts</h1>
+<p>Premium prompt collection by Alvan.</p>
+<input id="search" class="search" placeholder="Search prompt...">
+<div class="chips">
+<div class="chip">All</div><div class="chip">ChatGPT</div><div class="chip">Image</div><div class="chip">Video</div><div class="chip">Coding</div>
+</div>
+</div>
+<div class="grid" id="grid"></div>
+</div>
+<div id="toast">✅ Prompt copied!</div>
+<div class="bottom">
+<div>🏠<br>Home</div>
+<div>🔍<br>Search</div>
+<div>📂<br>Category</div>
+<div>❤️<br>Favorite</div>
+<div>👤<br>About</div>
+</div>
+<script>
+const prompts=[
+{title:"Ultra HD Photo",badge:"POPULAR",category:"Image",desc:"4K enhancement prompt",prompt:"Paste your prompt here"},
+{title:"Remove Object",badge:"HOT",category:"Image",desc:"Remove unwanted objects",prompt:"Remove object prompt"},
+{title:"ChatGPT Expert",badge:"NEW",category:"ChatGPT",desc:"Expert assistant",prompt:"Act as an expert assistant..."}
+];
+const grid=document.getElementById("grid");
+function render(list){
+grid.innerHTML="";
+list.forEach(p=>{
+grid.innerHTML+=`<div class="card">
+<span class="badge">${p.badge}</span>
+<h3>${p.title}</h3>
+<p>${p.desc}</p>
+<small>${p.category}</small>
+<button onclick="copyPrompt(\`${p.prompt}\`)">📋 Copy Prompt</button>
+</div>`;
+});
+}
+render(prompts);
+document.getElementById("search").oninput=e=>{
+const q=e.target.value.toLowerCase();
+render(prompts.filter(x=>x.title.toLowerCase().includes(q)||x.category.toLowerCase().includes(q)||x.desc.toLowerCase().includes(q)));
+}
+function copyPrompt(t){
+navigator.clipboard.writeText(t);
+const x=document.getElementById("toast");
+x.style.display="block";
+setTimeout(()=>x.style.display="none",1800);
+}
+</script>
+</body>
+</html>
